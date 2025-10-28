@@ -35,7 +35,14 @@
         <artifactId>junit-jupiter-engine</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
-      </dependency>  </dependencies>
+      </dependency>
+      <dependency>
+          <groupId>org.primefaces</groupId>
+          <artifactId>primefaces</artifactId>
+          <version>15.0.7</version>
+          <classifier>jakarta</classifier>
+      </dependency>
+  </dependencies>
 
   <build>
     <plugins>
