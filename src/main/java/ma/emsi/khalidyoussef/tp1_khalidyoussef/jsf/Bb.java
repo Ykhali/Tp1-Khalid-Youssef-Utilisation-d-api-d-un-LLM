@@ -58,7 +58,7 @@ public class Bb implements Serializable {
     @Inject
     private FacesContext facesContext;
 
-    private Boolean debug;
+    private boolean debug = false;
 
     /**
      * Obligatoire pour un bean CDI (classe gérée par CDI), s'il y a un autre constructeur.
@@ -107,11 +107,11 @@ public class Bb implements Serializable {
         this.conversation = new StringBuilder(conversation);
     }
 
-    public Boolean isDebug() {
+    public boolean isDebug() {
         return debug;
     }
 
-    public void setDebug(Boolean debug) {
+    public void setDebug(boolean debug) {
         this.debug = debug;
     }
 
