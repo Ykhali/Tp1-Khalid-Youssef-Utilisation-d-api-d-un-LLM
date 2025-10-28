@@ -1,4 +1,4 @@
-package ma.emsi.khalidyoussef.tp1_khalidyoussef.jsf;s
+package ma.emsi.khalidyoussef.tp1_khalidyoussef.jsf;
 
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -58,6 +58,8 @@ public class Bb implements Serializable {
     @Inject
     private FacesContext facesContext;
 
+    private Boolean debug;
+
     /**
      * Obligatoire pour un bean CDI (classe gérée par CDI), s'il y a un autre constructeur.
      */
@@ -103,6 +105,14 @@ public class Bb implements Serializable {
 
     public void setConversation(String conversation) {
         this.conversation = new StringBuilder(conversation);
+    }
+
+    public Boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(Boolean debug) {
+        this.debug = debug;
     }
 
     /**
@@ -198,6 +208,10 @@ public class Bb implements Serializable {
         }
 
         return this.listeRolesSysteme;
+    }
+
+    public void toggleDebug() {
+        this.setDebug(!isDebug());
     }
 
 }
