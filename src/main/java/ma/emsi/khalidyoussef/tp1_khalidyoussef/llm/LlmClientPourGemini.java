@@ -33,7 +33,7 @@ public class LlmClientPourGemini implements Serializable {
         if (key == null || key.isBlank()) {
             throw  new RuntimeException("GEMINI_KEY not set");
         }
-        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + "AIzaSyArhLBp1nTfpMF4KW7DgPOo6jLGA7MEAVs";
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + key;
         // Client REST pour envoyer des requêtes vers les endpoints de l'API du LLM
         this.clientRest = ClientBuilder.newClient();
         // Endpoint REST pour envoyer la question à l'API.

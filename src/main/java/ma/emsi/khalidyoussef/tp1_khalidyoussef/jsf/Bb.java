@@ -80,7 +80,7 @@ public class Bb implements Serializable {
      * Obligatoire pour un bean CDI (classe gérée par CDI), s'il y a un autre constructeur.
      */
     public Bb() {
-        this.setDebug(true);
+        this.setDebug(false);
     }
 
     public String getRoleSysteme() {
@@ -183,7 +183,7 @@ public class Bb implements Serializable {
             if (debug) {
                 System.out.println("📤 Envoi au LLM : " + question);
             }
-            LlmInteraction interaction = jsonUtil.envoyerRequete(question.trim());
+            LlmInteraction interaction = jsonUtil.envoyerRequete(question);
             this.reponse = interaction.reponseExtraite();
             this.texteRequeteJson = interaction.questionJson();
             this.texteReponseJson = interaction.reponseJson();
@@ -216,7 +216,7 @@ public class Bb implements Serializable {
      * Pour afficher la conversation dans le textArea de la page JSF.
      */
     private void afficherConversation() {
-        this.conversation.append("== User:\n").append(question).append("\n== Serveur:\n").append(reponse).append("\n");
+        this.conversation.append("== User:\n").append(question).append("\n== Serveur:\n").append(texteReponseJson).append("\n");
     }
 
     public List<SelectItem> getRolesSysteme() {
@@ -245,6 +245,24 @@ public class Bb implements Serializable {
                     are you tell them the average price of a meal.
                     """;
             this.listeRolesSysteme.add(new SelectItem(role, "Guide touristique"));
+
+            role = """
+                    You are an overly enthusiastic motivational coach who SCREAMS encouragement.
+                    Respond to every question with EXTREME MOTIVATION and CAPITAL LETTERS.
+                    Use phrases like "TU ES UN CHAMPION!" and "RIEN N'EST IMPOSSIBLE!"
+                    End every response with "💪 ALLEZ, C'EST PARTI Champion! 🔥"
+                    """;
+            this.listeRolesSysteme.add(new SelectItem(role, "Coach Motivateur"));
+
+            role = """
+                    You are an overly passionate chef who relates everything to cooking and food.
+                    Whatever the user asks, you explain it using culinary metaphors and recipes.
+                    Use expressions like "C'est comme préparer un tajine..." or "La vie est une recette..."
+                    Always include at least one Moroccan dish reference.
+                    End with "Bon appétit!" or "Sahha!"
+                    """;
+            this.listeRolesSysteme.add(new SelectItem(role, "Chef Cuisinier Fou"));
+
         }
 
         return this.listeRolesSysteme;

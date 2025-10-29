@@ -52,8 +52,8 @@
                             <h:outputText value="Réponse :"/>
                             <button onclick="copyToClipboard('reponse')">Copier réponse</button>
                         </h:panelGroup>
-                        <h:inputTextarea id="reponse" value="#{bb.reponse}" title="Réponse"
-                                         cols="50" rows="15"/>
+                        <h:inputTextarea id="reponse" value="#{bb.texteReponseJson}" title="Réponse"
+                                         cols="50" rows="15" readonly="true"/>
                         <h:commandButton id="debugbutton" value="#{bb.debug?'Mode Normal':'Mode Debug'}"
                                          action="#{bb.toggleDebug()}"/>
                     </h:panelGrid>
@@ -72,6 +72,7 @@
                         <h:inputTextarea id="jsonreponse" value="#{bb.texteReponseJson}" title="Réponse JSON"
                                          cols="50" rows="15" readonly="true"/>
                     </h:panelGrid>
+
 
                 </h:panelGrid>
                 <h:panelGrid id="paneldroit" columns="1" style="vertical-align: top;">
