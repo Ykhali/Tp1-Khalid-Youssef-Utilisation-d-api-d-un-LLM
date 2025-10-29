@@ -6,6 +6,8 @@ import jakarta.faces.model.SelectItem;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import ma.emsi.khalidyoussef.tp1_khalidyoussef.llm.JsonUtilPourGemini;
+import ma.emsi.khalidyoussef.tp1_khalidyoussef.llm.LlmInteraction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +22,20 @@ import java.util.Locale;
 @Named
 @ViewScoped
 public class Bb implements Serializable {
+
+    @Inject
+    private JsonUtilPourGemini jsonUtil;
+
+    /**
+     * JSON envoyé à l’API (la requête).
+     */
+    private String texteRequeteJson;
+
+    /**
+     * JSON reçu de l’API (la réponse complète).
+     */
+    private String texteReponseJson;
+
 
     /**
      * Rôle "système" que l'on attribuera plus tard à un LLM.
@@ -78,6 +94,22 @@ public class Bb implements Serializable {
         return roleSystemeChangeable;
     }
 
+    public String getTexteRequeteJson() {
+        return texteRequeteJson;
+    }
+
+    public void setTexteRequeteJson(String texteRequeteJson) {
+        this.texteRequeteJson = texteRequeteJson;
+    }
+
+    public String getTexteReponseJson() {
+        return texteReponseJson;
+    }
+
+    public void setTexteReponseJson(String texteReponseJson) {
+        this.texteReponseJson = texteReponseJson;
+    }
+
     public String getQuestion() {
         return question;
     }
@@ -131,31 +163,21 @@ public class Bb implements Serializable {
             facesContext.addMessage(null, message);
             return null;
         }
-        // Entourer la réponse avec "||".
-        String questionMaj = question.toUpperCase(Locale.FRENCH) + "?";
-        this.reponse = "|| Votre Question est \"" + questionMaj + "\"\n , ma réponse est la suivante :";
-        // Si la conversation n'a pas encore commencé, ajouter le rôle système au début de la réponse
-        if (this.conversation.isEmpty()) {
-            // Ajouter le rôle système au début de la réponse
-            this.reponse += roleSysteme.toUpperCase(Locale.FRENCH) + "\n";
-            // Invalide le bouton pour changer le rôle système
-            this.roleSystemeChangeable = false;
+
+        try {
+            LlmInteraction interaction = jsonUtil.envoyerRequete(question);
+            this.reponse = interaction.questionExtraite();
+            this.texteRequeteJson = interaction.questionJson();
+            this.texteReponseJson = interaction.reponseJson();
+        } catch (Exception e) {
+            FacesMessage message =
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Problème de connexion avec l'API du LLM",
+                            "Problème de connexion avec l'API du LLM" + e.getMessage());
+            facesContext.addMessage(null, message);
         }
-
-        //Transformation de la question en minuscules
-        String questionMinuscule = question.toLowerCase(Locale.FRENCH);
-
-        //Compter le nombre de caractères
-        int nbrCaracteres = questionMinuscule.length();
-
-        //Réponse finale
-        this.reponse += "Réponse En minuscule " + questionMinuscule + "\n";
-        this.reponse += "Nombre de caractères : " + nbrCaracteres + " ||";
-
-
-        //this.reponse += question.toLowerCase(Locale.FRENCH) + "||";
         // La conversation contient l'historique des questions-réponses depuis le début.
-        afficherConversation();
+        //afficherConversation();
         return null;
     }
 
