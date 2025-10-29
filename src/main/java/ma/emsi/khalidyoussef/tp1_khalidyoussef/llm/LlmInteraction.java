@@ -1,7 +1,7 @@
 package ma.emsi.khalidyoussef.tp1_khalidyoussef.llm;
 
 public record LlmInteraction(
-        String questionExtraite,
+        String reponseExtraite,
         String questionJson,
         String reponseJson
 ) {

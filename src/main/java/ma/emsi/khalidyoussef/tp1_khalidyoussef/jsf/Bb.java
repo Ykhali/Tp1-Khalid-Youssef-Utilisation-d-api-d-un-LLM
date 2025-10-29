@@ -80,6 +80,7 @@ public class Bb implements Serializable {
      * Obligatoire pour un bean CDI (classe gérée par CDI), s'il y a un autre constructeur.
      */
     public Bb() {
+        this.setDebug(true);
     }
 
     public String getRoleSysteme() {
@@ -165,8 +166,25 @@ public class Bb implements Serializable {
         }
 
         try {
-            LlmInteraction interaction = jsonUtil.envoyerRequete(question);
-            this.reponse = interaction.questionExtraite();
+            // 🔍 Vérification avant l’envoi
+            if (jsonUtil == null) {
+                throw new IllegalStateException("JsonUtilPourGemini n’est pas injecté.");
+            }
+
+            // 🔧 FIX: Set the system role before sending the request
+            if (roleSysteme != null && !roleSysteme.isBlank()) {
+                jsonUtil.setSystemRole(roleSysteme);
+            } else {
+                // Default role if none is selected
+                jsonUtil.setSystemRole("You are a helpful assistant.");
+            }
+
+            // 🔍 Tracer le texte envoyé (utile pour le debug)
+            if (debug) {
+                System.out.println("📤 Envoi au LLM : " + question);
+            }
+            LlmInteraction interaction = jsonUtil.envoyerRequete(question.trim());
+            this.reponse = interaction.reponseExtraite();
             this.texteRequeteJson = interaction.questionJson();
             this.texteReponseJson = interaction.reponseJson();
         } catch (Exception e) {
@@ -177,7 +195,7 @@ public class Bb implements Serializable {
             facesContext.addMessage(null, message);
         }
         // La conversation contient l'historique des questions-réponses depuis le début.
-        //afficherConversation();
+        afficherConversation();
         return null;
     }
 
