@@ -25,7 +25,6 @@ public class Bb implements Serializable {
 
     @Inject
     private JsonUtilPourGemini jsonUtil;
-
     /**
      * JSON envoyé à l’API (la requête).
      */
@@ -35,6 +34,12 @@ public class Bb implements Serializable {
      * JSON reçu de l’API (la réponse complète).
      */
     private String texteReponseJson;
+
+
+    // Mode debug
+    private boolean debug = false;
+
+    private String reponseJson;
 
 
     /**
@@ -73,9 +78,6 @@ public class Bb implements Serializable {
      */
     @Inject
     private FacesContext facesContext;
-
-    private boolean debug = false;
-
     /**
      * Obligatoire pour un bean CDI (classe gérée par CDI), s'il y a un autre constructeur.
      */
@@ -89,6 +91,14 @@ public class Bb implements Serializable {
 
     public void setRoleSysteme(String roleSysteme) {
         this.roleSysteme = roleSysteme;
+    }
+
+    public String getReponseJson() {
+        return this.reponse;
+    }
+
+    public void setReponseJson(String reponseJson) {
+        this.reponseJson = reponseJson;
     }
 
     public boolean isRoleSystemeChangeable() {
@@ -166,7 +176,7 @@ public class Bb implements Serializable {
         }
 
         try {
-            // 🔍 Vérification avant l’envoi
+            // Vérification avant l’envoi
             if (jsonUtil == null) {
                 throw new IllegalStateException("JsonUtilPourGemini n’est pas injecté.");
             }
@@ -216,8 +226,14 @@ public class Bb implements Serializable {
      * Pour afficher la conversation dans le textArea de la page JSF.
      */
     private void afficherConversation() {
-        this.conversation.append("== User:\n").append(question).append("\n== Serveur:\n").append(texteReponseJson).append("\n");
+        this.conversation
+                .append("== User:\n")
+                .append(question)
+                .append("\n== Serveur:\n")
+                .append(reponse)
+                .append("\n");
     }
+
 
     public List<SelectItem> getRolesSysteme() {
         if (this.listeRolesSysteme == null) {
@@ -272,7 +288,7 @@ public class Bb implements Serializable {
                     """;
             this.listeRolesSysteme.add(new SelectItem(role, "Professeur Sarcastique"));
 
-            role = """
+            /*role = """
                     You are a loving Moroccan grandmother who gives advice with warmth and wisdom.
                     Mix French, Arabic expressions, and Darija naturally.
                     Always relate advice to family, food, and traditional Moroccan values.
@@ -280,7 +296,7 @@ public class Bb implements Serializable {
                     Include references to Moroccan dishes and proverbs.
                     End with blessings like "Allah ykhalik" or "Rabi m3ak".
                     """;
-            this.listeRolesSysteme.add(new SelectItem(role, "Grand-mère Marocaine"));
+            this.listeRolesSysteme.add(new SelectItem(role, "Grand-mère Marocaine"));*/
 
             role = """
                 You are a romantic poet from the 19th century who answers everything in poetic verse.

@@ -29,8 +29,8 @@ public class LlmClientPourGemini implements Serializable {
     public LlmClientPourGemini() {
         // Récupère la clé secrète pour travailler avec l'API du LLM, mise dans une variable d'environnement
         // du système d'exploitation.
-        key = System.getenv("GEMINI_KEY");
-        if (key == null || key.isBlank()) {
+        this.key = System.getenv("GEMINI_KEY");
+        if (this.key == null || this.key.isBlank()) {
             throw  new RuntimeException("GEMINI_KEY not set");
         }
         String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + key;

@@ -52,7 +52,7 @@
                             <h:outputText value="Réponse :"/>
                             <button onclick="copyToClipboard('reponse')">Copier réponse</button>
                         </h:panelGroup>
-                        <h:inputTextarea id="reponse" value="#{bb.texteReponseJson}" title="Réponse"
+                        <h:inputTextarea id="reponse" value="#{bb.reponse}" title="Réponse"
                                          cols="50" rows="15" readonly="true"/>
                         <h:commandButton id="debugbutton" value="#{bb.debug?'Mode Normal':'Mode Debug'}"
                                          action="#{bb.toggleDebug()}"/>
